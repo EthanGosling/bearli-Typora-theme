@@ -1,0 +1,681 @@
+/* =========================================================
+   Bear - Typora theme
+   复刻熊掌记 (Bear 2) 默认主题 Red Graphite 的笔记样式。
+   色值取自 Bear.app 内置的 Red Graphite.theme，
+   字号、行距、间距取自截图实测 (2x 截图换算为 CSS px)。
+   ========================================================= */
+
+/* ---------- 字体 ----------
+   Bear Sans UI 是 Bear 自带的专有字体，这里直接引用本机
+   /Applications/Bear.app 里的字体文件，不复制、不分发。
+   没装 Bear 时自动回落到 Avenir Next 和苹方。 */
+
+@font-face {
+  font-family: "Bear Sans UI";
+  src: local("BearSansUI-Regular"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUI-Regular.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Bear Sans UI";
+  src: local("BearSansUI-Italic"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUI-Italic.otf") format("opentype");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Bear Sans UI";
+  src: local("BearSansUI-Medium"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUI-Medium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Bear Sans UI";
+  src: local("BearSansUI-MediumItalic"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUI-MediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Bear Sans UI";
+  src: local("BearSansUI-Bold"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUI-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Bear Sans UI";
+  src: local("BearSansUI-BoldItalic"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUI-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Bear Sans UI Heading";
+  src: local("BearSansUIHeading-Bold"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUIHeading-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Bear Sans UI Heading";
+  src: local("BearSansUIHeading-BoldItalic"),
+       url("file:///Applications/Bear.app/Contents/Resources/BearSansUIHeading-BoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Bear Roboto Mono";
+  src: local("RobotoMono-Regular"),
+       url("file:///Applications/Bear.app/Contents/Resources/RobotoMono-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* ---------- 变量 ---------- */
+
+:root {
+  /* Red Graphite 原始色值 */
+  --bear-accent: #dd4c4f;
+  --bear-bg: #ffffff;
+  --bear-bg-secondary: #f3f5f7;
+  --bear-bg-tertiary: #e4e5e6;
+  --bear-text: #444444;
+  --bear-text-secondary: #888888;
+  --bear-text-tertiary: #d9d9d9;
+  --bear-stroke: #d9d9d9;
+  --bear-selection: #d3e6fb;
+  --bear-highlight-bg: #d3ffa4;
+  --bear-highlight-text: #1a3200;
+
+  --bear-font-text: "Bear Sans UI", "Avenir Next", -apple-system, "PingFang SC",
+    "Hiragino Sans GB", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --bear-font-heading: "Bear Sans UI Heading", "Bear Sans UI", "Avenir Next",
+    -apple-system, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "Segoe UI", sans-serif;
+
+  /* 一个空行的高度，等于正文一行 (15px x 1.8 = 27px) */
+  --bear-line: 1.8rem;
+
+  /* Typora 内置变量 */
+  --bg-color: var(--bear-bg);
+  --text-color: var(--bear-text);
+  --md-char-color: var(--bear-text-tertiary);
+  --meta-content-color: var(--bear-text-secondary);
+  --primary-color: var(--bear-accent);
+  --primary-btn-border-color: var(--bear-accent);
+  --primary-btn-text-color: #ffffff;
+  --window-border: 1px solid var(--bear-bg-tertiary);
+  --active-file-bg-color: var(--bear-bg-tertiary);
+  --active-file-text-color: var(--bear-text);
+  --active-file-border-color: var(--bear-accent);
+  --side-bar-bg-color: var(--bear-bg-secondary);
+  --item-hover-bg-color: var(--bear-bg-tertiary);
+  --item-hover-text-color: var(--bear-text);
+  --select-text-bg-color: var(--bear-selection);
+  --search-select-bg-color: #fffa5e;
+  --search-select-text-color: var(--bear-text);
+  --control-text-color: var(--bear-text);
+  --control-text-hover-color: var(--bear-accent);
+  --rawblock-edit-panel-bd: var(--bear-bg-secondary);
+  --monospace: "Bear Roboto Mono", "Roboto Mono", "SF Mono", Menlo, Consolas,
+    monospace;
+}
+
+/* ---------- 全局 ---------- */
+
+html {
+  font-size: 15px;
+}
+
+html,
+body {
+  background-color: var(--bear-bg);
+  color: var(--bear-text);
+  font-family: var(--bear-font-text);
+}
+
+body {
+  line-height: 1.8;
+}
+
+/* Typora 全局 box-sizing: border-box，max-width 包含左右 padding。
+   654px 正文宽 + 2 x 30px padding = 714px，和 Bear 的正文宽度一致。 */
+#write {
+  max-width: 714px;
+  margin: 0 auto;
+  padding: 37px 30px 100px;
+  font-size: 1rem;
+  line-height: 1.8;
+  color: var(--bear-text);
+  caret-color: var(--bear-accent);
+}
+
+#write ::selection {
+  background-color: var(--bear-selection);
+}
+
+/* ---------- 段落 ---------- */
+
+#write p,
+#write ul,
+#write ol,
+#write blockquote,
+#write table,
+#write figure,
+#write .md-fences,
+#write .md-toc,
+#write [mdtype="math_block"] {
+  margin-top: var(--bear-line);
+  margin-bottom: var(--bear-line);
+}
+
+#write > *:first-child {
+  margin-top: 0;
+}
+
+/* ---------- 标题 ----------
+   模数 1.125，每级放大两档：30 / 24 / 19 / 15px。
+   上方比空行多留 0.6 个字高，下方紧贴正文。 */
+
+#write h1,
+#write h2,
+#write h3,
+#write h4,
+#write h5,
+#write h6 {
+  font-family: var(--bear-font-heading);
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--bear-text);
+  margin-top: calc(var(--bear-line) + 0.6em);
+  margin-bottom: 0.13em;
+}
+
+#write h1 {
+  font-size: 2.027rem;
+}
+#write h2 {
+  font-size: 1.602rem;
+}
+#write h3 {
+  font-size: 1.266rem;
+}
+#write h4 {
+  font-size: 1rem;
+}
+#write h5 {
+  font-size: 1rem;
+}
+#write h6 {
+  font-size: 1rem;
+  color: var(--bear-text-secondary);
+}
+
+/* 标题后的正文紧跟标题，不再空一行 */
+#write h1 + p,
+#write h2 + p,
+#write h3 + p,
+#write h4 + p,
+#write h5 + p,
+#write h6 + p,
+#write h1 + ul,
+#write h2 + ul,
+#write h3 + ul,
+#write h4 + ul,
+#write h5 + ul,
+#write h6 + ul,
+#write h1 + ol,
+#write h2 + ol,
+#write h3 + ol,
+#write h4 + ol,
+#write h5 + ol,
+#write h6 + ol {
+  margin-top: 0;
+}
+
+/* ---------- 分割线 ---------- */
+
+#write hr {
+  height: 1px;
+  border: 0;
+  background-color: var(--bear-stroke);
+  margin: 40px 0 0;
+}
+
+#write hr + h1,
+#write hr + h2,
+#write hr + h3,
+#write hr + h4,
+#write hr + h5,
+#write hr + h6 {
+  margin-top: calc(13.5px + 0.5em);
+}
+
+/* ---------- 行内样式 ---------- */
+
+#write strong {
+  font-weight: 700;
+  color: inherit;
+}
+
+#write em {
+  font-style: italic;
+}
+
+/* 下划线是强调色，文字颜色不变 */
+#write u {
+  text-decoration: underline;
+  text-decoration-color: var(--bear-accent);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+/* 删除线整体变灰 */
+#write del {
+  color: var(--bear-text-secondary);
+  text-decoration-color: var(--bear-text-secondary);
+}
+
+/* 高亮：浅绿底 + 深绿字 */
+#write mark {
+  background-color: var(--bear-highlight-bg);
+  color: var(--bear-highlight-text);
+  padding: 0.1em 0.28em;
+  border-radius: 0.3em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+#write a {
+  color: var(--bear-accent);
+  text-decoration: none;
+}
+
+#write a:hover {
+  text-decoration: underline;
+  text-underline-offset: 0.22em;
+}
+
+#write sup,
+#write sub {
+  font-size: 0.75em;
+}
+
+#write sup.md-footnote {
+  background: none;
+  color: var(--bear-accent);
+  padding: 0 0.1em;
+}
+
+#write sup.md-footnote a {
+  color: var(--bear-accent);
+}
+
+#write code,
+#write tt {
+  font-family: var(--monospace);
+  font-size: 0.9em;
+  color: var(--bear-text);
+  background-color: var(--bear-bg-secondary);
+  border: 1px solid var(--bear-text-tertiary);
+  border-radius: 4px;
+  padding: 0.08em 0.3em;
+}
+
+#write kbd {
+  font-family: var(--monospace);
+  font-size: 0.8em;
+  color: var(--bear-text);
+  background-color: var(--bear-bg);
+  border: 1px solid var(--bear-stroke);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  padding: 0.05em 0.35em;
+  box-shadow: none;
+}
+
+/* Markdown 符号 */
+#write .md-meta,
+#write .md-content {
+  color: var(--bear-text-tertiary);
+}
+
+/* 标签 (#tag)：灰色胶囊 */
+#write .md-tag {
+  color: var(--bear-text);
+  background-color: var(--bear-bg-tertiary);
+  border-radius: 999px;
+  padding: 0.1em 0.6em;
+  opacity: 1;
+}
+
+/* ---------- 列表 ---------- */
+
+/* 圆点为强调色；文字缩进 33px，圆点离文字约 22px */
+#write ul,
+#write ol {
+  padding-left: 22px;
+}
+
+#write li {
+  padding-left: 11px;
+  margin: 0;
+}
+
+#write ul > li::marker,
+#write ol > li::marker {
+  color: var(--bear-accent);
+}
+
+#write li > p,
+#write li > ul,
+#write li > ol {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* 待办：选框 18px，左边和正文左边缘对齐，文字离选框左边 32px。
+   嵌套一级缩进 32px，子项选框正好对齐上一级文字。 */
+#write ul.task-list {
+  padding-left: 32px;
+}
+
+#write li.task-list-item {
+  list-style: none;
+  position: relative;
+  padding-left: 0;
+}
+
+#write .md-task-list-item > input {
+  -webkit-appearance: none;
+  appearance: none;
+  position: absolute;
+  left: -32px;
+  /* 在一行 (27px) 里垂直居中 */
+  top: calc((var(--bear-line) - 1.2rem) / 2);
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: 0;
+  border: 1.5px solid var(--bear-text-secondary);
+  border-radius: 5px;
+  background-color: var(--bear-bg);
+}
+
+#write .md-task-list-item > input:checked {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path d='M3.5 8.4l3 3 6-6.8' fill='none' stroke='%23444444' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-size: 100% 100%;
+}
+
+#write .task-list-item.task-list-done {
+  color: var(--bear-text-secondary);
+}
+
+/* ---------- 引用 ---------- */
+
+#write blockquote {
+  position: relative;
+  margin-left: 0;
+  margin-right: 0;
+  padding: 0 0 0 20px;
+  border: 0;
+  color: var(--bear-text);
+}
+
+#write blockquote::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  bottom: 0.2em;
+  width: 3px;
+  border-radius: 2px;
+  background-color: var(--bear-accent);
+}
+
+#write blockquote > *:first-child {
+  margin-top: 0;
+}
+
+#write blockquote > *:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- 代码块 ---------- */
+
+#write .md-fences {
+  font-family: var(--monospace);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--bear-text);
+  background-color: var(--bear-bg-secondary);
+  border: 1px solid var(--bear-text-tertiary);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+#write .md-fences .CodeMirror,
+#write .md-fences .CodeMirror-gutters {
+  background-color: transparent;
+  border: 0;
+}
+
+.CodeMirror-linenumber {
+  color: var(--bear-text-secondary);
+}
+
+.cm-s-inner .cm-comment {
+  color: #65798c;
+}
+.cm-s-inner .cm-keyword,
+.cm-s-inner .cm-builtin {
+  color: #ad3da4;
+}
+.cm-s-inner .cm-number,
+.cm-s-inner .cm-atom {
+  color: #0095c9;
+}
+.cm-s-inner .cm-string,
+.cm-s-inner .cm-string-2 {
+  color: #d12f1b;
+}
+.cm-s-inner .cm-def,
+.cm-s-inner .cm-variable-2,
+.cm-s-inner .cm-variable-3,
+.cm-s-inner .cm-property,
+.cm-s-inner .cm-attribute,
+.cm-s-inner .cm-qualifier,
+.cm-s-inner .cm-tag {
+  color: #4a838b;
+}
+.cm-s-inner .cm-variable,
+.cm-s-inner .cm-operator {
+  color: var(--bear-text);
+}
+
+.md-lang {
+  color: var(--bear-text-secondary);
+}
+
+#write pre.md-meta-block {
+  font-family: var(--monospace);
+  font-size: 0.9rem;
+  color: var(--bear-text-secondary);
+  background-color: var(--bear-bg-secondary);
+  border-radius: 6px;
+  padding: 12px 16px;
+}
+
+/* ---------- 表格 ---------- */
+
+/* 外框圆角，列之间有竖线，行之间没有横线，只靠底色区分。
+   表头和偶数行是浅灰底，奇数行白底。宽度随内容。 */
+#write table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: auto;
+  font-size: 1rem;
+  border: 1px solid var(--bear-stroke);
+  border-radius: 4px;
+}
+
+#write table th,
+#write table td {
+  border: 0;
+  border-left: 1px solid var(--bear-stroke);
+  padding: 6px 15px;
+  text-align: left;
+}
+
+#write table tr > :first-child {
+  border-left: 0;
+}
+
+#write table th {
+  font-weight: 700;
+  background-color: var(--bear-bg-secondary);
+}
+
+#write table tbody tr:nth-child(odd) td {
+  background-color: var(--bear-bg);
+}
+
+#write table tbody tr:nth-child(even) td {
+  background-color: var(--bear-bg-secondary);
+}
+
+/* 四角单元格也要圆角，不然底色会盖住外框的圆角 */
+#write table thead tr:first-child > :first-child {
+  border-top-left-radius: 3px;
+}
+#write table thead tr:first-child > :last-child {
+  border-top-right-radius: 3px;
+}
+#write table tbody tr:last-child > :first-child {
+  border-bottom-left-radius: 3px;
+}
+#write table tbody tr:last-child > :last-child {
+  border-bottom-right-radius: 3px;
+}
+
+/* ---------- 图片、目录、脚注 ---------- */
+
+#write img {
+  max-width: 100%;
+}
+
+#write .md-toc {
+  font-size: 1rem;
+}
+
+#write .md-toc-content {
+  color: var(--bear-accent);
+}
+
+#write .md-toc-item a,
+#write .md-toc-inner {
+  color: var(--bear-accent);
+  text-decoration: none;
+}
+
+#write .footnotes-area hr {
+  margin: 40px 0 var(--bear-line);
+}
+
+#write .footnotes-area,
+#write .md-def-footnote {
+  font-size: 1rem;
+  color: var(--bear-text);
+}
+
+#write .md-def-name {
+  color: var(--bear-accent);
+}
+
+/* ---------- 源码模式 ---------- */
+
+.cm-s-typora-default .CodeMirror-lines,
+#typora-source .CodeMirror-lines {
+  max-width: 654px;
+}
+
+.cm-s-typora-default .cm-header {
+  color: var(--bear-text);
+  font-weight: 700;
+}
+.cm-s-typora-default .cm-link,
+.cm-s-typora-default .cm-url {
+  color: var(--bear-accent);
+}
+.cm-s-typora-default .cm-comment,
+.cm-s-typora-default .cm-code {
+  color: #65798c;
+}
+
+/* ---------- 界面 ---------- */
+
+#typora-sidebar,
+.sidebar-tabs {
+  font-size: 14px;
+}
+
+.sidebar-tabs {
+  border-bottom: 0;
+}
+
+.file-node-content:hover .file-node-open-state {
+  visibility: visible;
+}
+
+.outline-item:hover,
+.file-list-item:hover {
+  background-color: var(--bear-bg-tertiary);
+}
+
+.outline-active {
+  color: var(--bear-accent);
+}
+
+#md-notification .btn {
+  border: 0;
+}
+
+.ty-preferences .nav-group-item.active {
+  color: #ffffff;
+  background-color: var(--bear-accent);
+}
+
+/* ---------- 打印 / 导出 PDF ---------- */
+
+@media print {
+  html {
+    font-size: 14px;
+  }
+
+  .typora-export * {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  #write {
+    max-width: 100%;
+    padding: 0;
+  }
+
+  #write h1,
+  #write h2,
+  #write h3,
+  #write h4,
+  #write h5,
+  #write h6 {
+    page-break-after: avoid;
+  }
+
+  #write .md-fences,
+  #write table,
+  #write blockquote {
+    page-break-inside: avoid;
+  }
+}
